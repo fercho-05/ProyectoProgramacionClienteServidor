@@ -1,4 +1,6 @@
 
+
+
 public class DatosEmpleado{
     private String nombre;
     private String apellidos;

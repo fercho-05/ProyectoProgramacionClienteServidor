@@ -1,10 +1,13 @@
 
+
+
+
 import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 public class Cliente extends javax.swing.JFrame {
-    DatosClientes almacenClientes[] = new DatosClientes[50];
+    static DatosClientes almacenClientes[] = new DatosClientes[50];
     
     public Cliente() {
         initComponents();

@@ -1,4 +1,3 @@
-
 import javax.swing.JOptionPane;
 import java.awt.Image;
 import javax.swing.ImageIcon;
@@ -29,6 +28,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
+        jmFacturación = new javax.swing.JMenu();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
 
@@ -112,6 +112,14 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(jmCatalogo);
 
+        jmFacturación.setText("Facturación");
+        jmFacturación.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jmFacturaciónMouseClicked(evt);
+            }
+        });
+        jMenuBar1.add(jmFacturación);
+
         jMenu1.setMnemonic('S');
         jMenu1.setText("Salir");
 
@@ -137,7 +145,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 552, Short.MAX_VALUE)
+            .addGap(0, 553, Short.MAX_VALUE)
         );
 
         pack();
@@ -172,7 +180,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-         new Cliente().setVisible(true);
+        new Cliente().setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
@@ -186,6 +194,10 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
         new Frutas().setVisible(true);
     }//GEN-LAST:event_jMenuItem5ActionPerformed
+
+    private void jmFacturaciónMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jmFacturaciónMouseClicked
+        new Facturacion().setVisible(true);
+    }//GEN-LAST:event_jmFacturaciónMouseClicked
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -228,6 +240,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenu jmCatalogo;
+    private javax.swing.JMenu jmFacturación;
     private javax.swing.JMenuItem mitemCliente;
     private javax.swing.JMenuItem mitemEmpleado;
     private javax.swing.JMenu usuarios;

@@ -8,7 +8,8 @@ import javax.swing.JOptionPane;
  * @author Fernando
  */
 public class Frutas extends javax.swing.JFrame {
-    public ArrayList<DatosFrutas> almacenFrutas = new ArrayList<>();
+
+    public static ArrayList<DatosFrutas> almacenFrutas = new ArrayList<>();
     DatosFrutas control = new DatosFrutas();
 
     public Frutas() {
@@ -20,7 +21,6 @@ public class Frutas extends javax.swing.JFrame {
         setResizable(false);
     }
 
-  
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -239,88 +239,88 @@ public class Frutas extends javax.swing.JFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         consultar();
     }//GEN-LAST:event_jButton4ActionPerformed
- 
-    public void agregar(){
-        if (jTextField1.getText().equals("") || jTextField2.getText().equals("")  || jTextField3.getText().equals("")  
-                || jTextField4.getText().equals("")  || jTextField5.getText().equals("")) {
+
+    public void agregar() {
+        if (jTextField1.getText().trim().isBlank() || jTextField2.getText().trim().isBlank() || jTextField3.getText().trim().isBlank()
+                || jTextField4.getText().trim().isBlank() || jTextField5.getText().trim().isBlank()) {
             JOptionPane.showMessageDialog(null, "Por favor, llene todas las casillas para poder agregar una fruta.",
                     "Casillas vacías", JOptionPane.ERROR_MESSAGE);
-        }else{
+        } else {
             char estado;
             if (jCheckBox1.isSelected()) {
                 estado = 'A';
             } else {
                 estado = 'I';
             }
-            DatosFrutas fruta = new DatosFrutas(jTextField1.getText(), Integer.parseInt(jTextField2.getText()),jTextField4.getText(),
-                    jTextField5.getText(), Double.parseDouble(jTextField3.getText()),estado); 
-            
+            DatosFrutas fruta = new DatosFrutas(jTextField1.getText(), Integer.parseInt(jTextField2.getText()), jTextField4.getText(),
+                    jTextField5.getText(), Double.parseDouble(jTextField3.getText()), estado);
+
             control.agregar(almacenFrutas, fruta);
             limpiar();
         }
     }
-    
-    public void editar(){
-        if (jTextField1.getText().equals("") || jTextField2.getText().equals("")  || jTextField3.getText().equals("")  
-                || jTextField4.getText().equals("")  || jTextField5.getText().equals("")) {
+
+    public void editar() {
+        if (jTextField1.getText().equals("") || jTextField2.getText().equals("") || jTextField3.getText().equals("")
+                || jTextField4.getText().equals("") || jTextField5.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Por favor, llene todas las casillas para poder editar una fruta.",
                     "Casillas vacías", JOptionPane.ERROR_MESSAGE);
-        }else{
+        } else {
             char estado;
             if (jCheckBox1.isSelected()) {
                 estado = 'A';
             } else {
                 estado = 'I';
             }
-            DatosFrutas fruta = new DatosFrutas(jTextField1.getText(), Integer.parseInt(jTextField2.getText()),jTextField4.getText(),
-                    jTextField5.getText(), Double.parseDouble(jTextField3.getText()),estado); 
-           
+            DatosFrutas fruta = new DatosFrutas(jTextField1.getText(), Integer.parseInt(jTextField2.getText()), jTextField4.getText(),
+                    jTextField5.getText(), Double.parseDouble(jTextField3.getText()), estado);
+
             control.editar(almacenFrutas, fruta);
             limpiar();
         }
     }
-    
-    public void inactivar(){
+
+    public void inactivar() {
         if (jTextField1.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Por favor, llene la casilla Descripción/nombre para poder inactivar una fruta.",
                     "Casillas vacías", JOptionPane.ERROR_MESSAGE);
-        }else{
+        } else {
             control.inactivar(almacenFrutas, jTextField1.getText());
             limpiar();
         }
     }
-    
-    public void consultar(){ 
+
+    public void consultar() {
         boolean existe = false;
         int encontrado = 0;
         if (jTextField1.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Por favor, llene la casilla Descripción/nombre para poder buscar una fruta.",
                     "Casillas vacías", JOptionPane.ERROR_MESSAGE);
-        }else{
+        } else {
             for (int i = 0; i < almacenFrutas.size(); i++) {
                 if (almacenFrutas.get(i).getDescripcion().equals(jTextField1.getText())) {
                     existe = true;
                     break;
                 }
-                encontrado ++;
+                encontrado++;
             }
-            
+
             if (existe) {
-                JOptionPane.showMessageDialog(null,"Descripción/Nombre: "+ almacenFrutas.get(encontrado).getDescripcion()
-                        +"\n"+"Cantidad: "+almacenFrutas.get(encontrado).getCantidad()
-                        +"\n"+"Precio: "+almacenFrutas.get(encontrado).getPrecio()
-                        +"\n"+"Proveedor: "+almacenFrutas.get(encontrado).getProveedor()
-                        +"\n"+"Temporada: "+almacenFrutas.get(encontrado).getTemporada()
-                        +"\n"+"Estado(A=Activo/I=Inactivo): "+almacenFrutas.get(encontrado).getEstado(),
+                JOptionPane.showMessageDialog(null, "Descripción/Nombre: " + almacenFrutas.get(encontrado).getDescripcion()
+                        + "\n" + "Cantidad: " + almacenFrutas.get(encontrado).getCantidad()
+                        + "\n" + "Precio: " + almacenFrutas.get(encontrado).getPrecio()
+                        + "\n" + "Proveedor: " + almacenFrutas.get(encontrado).getProveedor()
+                        + "\n" + "Temporada: " + almacenFrutas.get(encontrado).getTemporada()
+                        + "\n" + "Estado(A=Activo/I=Inactivo): " + almacenFrutas.get(encontrado).getEstado(),
                         "Fruta encontrada", JOptionPane.INFORMATION_MESSAGE);
                 limpiar();
-            }else{
+            } else {
                 JOptionPane.showMessageDialog(null, "La fruta no se encuentra registrada en el sistema.",
-                    "Fruta no encontrada", JOptionPane.INFORMATION_MESSAGE);
+                        "Fruta no encontrada", JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }
-    
+
     public void limpiar() {
         jTextField1.setText("");
         jTextField2.setText("");
@@ -330,6 +330,7 @@ public class Frutas extends javax.swing.JFrame {
         jCheckBox1.setSelected(false);
         jTextField1.requestFocus();
     }
+
     /**
      * @param args the command line arguments
      */
