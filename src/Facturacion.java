@@ -24,6 +24,7 @@ public class Facturacion extends javax.swing.JFrame {
 
         Aparicion(false, true);
     }
+    int n;
 
     //Tenemos que buscar en las otras clases
     //descripción de  las frutas compradas(deberá buscarlo en el catálogode frutas), 
@@ -42,6 +43,8 @@ public class Facturacion extends javax.swing.JFrame {
                 DA.setDescripcionFruta(jtfDescripcionFruta.getText());//Obtenemos la descripcion en datos archivos
                 DA.setFecha(date.toString());//Obtenemos la fecha
                 DA.setCantidadCompra(Integer.parseInt(jtfCantidadCompra.getText()));//Dijitamos la cantidad a comprar
+                //Reduccion de cantidad disponible
+                Frutas.almacenFrutas.get(n).setCantidad(Frutas.almacenFrutas.get(n).getCantidad() - DA.getCantidadCompra());
 //-----------------------------------------------------------------------------------------------------------------------------------
                 DataOutputStream salida = new DataOutputStream(new FileOutputStream("Facturacion.dat", true));
 //-----------------------------------------------------------------------------------------------------------------------------------
@@ -57,7 +60,7 @@ public class Facturacion extends javax.swing.JFrame {
                 Aparicion(false, true);
                 salida.close();
                 /*Fin Validaciones*/
-                
+
                 //Compra Realizada
                 JOptionPane.showMessageDialog(null, "Su compra se ha realizado");
 //-----------------------------------------------------------------------------------------------------------------------------------            
@@ -88,6 +91,7 @@ public class Facturacion extends javax.swing.JFrame {
                 } else if (Cliente.almacenClientes[i].getIdentificacion() == Integer.parseInt(jtfIdentificacion.getText())) {
                     existeC = true;
                     aparecen = true;
+                    n = i;
                     break;
                 }
                 indiceEncontrado++;
