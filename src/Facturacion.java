@@ -29,35 +29,42 @@ public class Facturacion extends javax.swing.JFrame {
     //descripción de  las frutas compradas(deberá buscarlo en el catálogode frutas), 
     //nombre   del    cliente   (deberá  buscar  esta  información  en  las estructuras  respectivas). 
     public void Reservar() {//Aqui registraremos la fecha y hora, descripción de las frutas compradas, nombre del cliente 
-        try {
+        if (jtfCantidadCompra.getText().trim().isBlank()) {//En este caso solo pedimos este ya que es el unico que ocupamos en este
+            JOptionPane.showMessageDialog(null, "Faltan Espacios por rellenar");
+        } else {
+            try {
 //-----------------------------------------------------------------------------------------------------------------------------------            
-            Date date = new Date();//Esta es la fecha y hora actual.
-            DatosArchivos DA = new DatosArchivos();//Estos son los datos que vamos a pedir
+                Date date = new Date();//Esta es la fecha y hora actual.
+                DatosArchivos DA = new DatosArchivos();//Estos son los datos que vamos a pedir
 //-----------------------------------------------------------------------------------------------------------------------------------
-            DA.setNombre(jtfNombre.getText());//Obtenemos el nombre en datos archivos
-            DA.setApellido(jtfApellido.getText());//Obtenemos el apellido en datos archivos
-            DA.setDescripcionFruta(jtfDescripcionFruta.getText());//Obtenemos la descripcion en datos archivos
-            DA.setFecha(date.toString());//Obtenemos la fecha
-            DA.setCantidadCompra(Integer.parseInt(jtfCantidadCompra.getText()));//Dijitamos la cantidad a comprar
+                DA.setNombre(jtfNombre.getText());//Obtenemos el nombre en datos archivos
+                DA.setApellido(jtfApellido.getText());//Obtenemos el apellido en datos archivos
+                DA.setDescripcionFruta(jtfDescripcionFruta.getText());//Obtenemos la descripcion en datos archivos
+                DA.setFecha(date.toString());//Obtenemos la fecha
+                DA.setCantidadCompra(Integer.parseInt(jtfCantidadCompra.getText()));//Dijitamos la cantidad a comprar
 //-----------------------------------------------------------------------------------------------------------------------------------
-            DataOutputStream salida = new DataOutputStream(new FileOutputStream("Facturacion.dat", true));
+                DataOutputStream salida = new DataOutputStream(new FileOutputStream("Facturacion.dat", true));
 //-----------------------------------------------------------------------------------------------------------------------------------
-            //Agregamos los datos
-            salida.writeUTF(date.toString());//Convertimos la fecha a String para que no de problemas
-            salida.writeUTF(DA.getNombre() + DA.getApellido());//Guardamos Nombre y Apellido
-            salida.writeUTF(DA.getDescripcionFruta());
-            salida.writeInt(DA.getCantidadCompra());
+                //Agregamos los datos
+                salida.writeUTF(date.toString());//Convertimos la fecha a String para que no de problemas
+                salida.writeUTF(DA.getNombre() + DA.getApellido());//Guardamos Nombre y Apellido
+                salida.writeUTF(DA.getDescripcionFruta());
+                salida.writeInt(DA.getCantidadCompra());
 
 //-----------------------------------------------------------------------------------------------------------------------------------
-            //Fin agregado de datos
-            Limpiar();
-            Aparicion(false, true);
-            salida.close();
-            /*Fin Validaciones*/
+                //Fin agregado de datos
+                Limpiar();
+                Aparicion(false, true);
+                salida.close();
+                /*Fin Validaciones*/
+                
+                //Compra Realizada
+                JOptionPane.showMessageDialog(null, "Su compra se ha realizado");
 //-----------------------------------------------------------------------------------------------------------------------------------            
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "¡Ocurrió un error al guardar!",
-                    "Error al guardar", JOptionPane.ERROR_MESSAGE);
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, "¡Ocurrió un error al guardar!",
+                        "Error al guardar", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 
@@ -139,9 +146,10 @@ public class Facturacion extends javax.swing.JFrame {
                     dc.setNombre(entrada.readUTF());//Leemos datos
                     dc.setApellido(entrada.readUTF());//Leemos datos
                     dc.setCantidadCompra(entrada.readInt());//leemos datos
+                    //Si nombre y apellido son iguales
                     if ((jtfNombre.getText().equals(dc.getNombre()) && (jtfApellido.getText().equals(dc.getApellido())))) {
-                        Aparicion(true, true);
-                        jtfCantidadCompra.setText(String.valueOf(dc.getCantidadCompra()));
+                        Aparicion(true, true);//aparecemos reservar
+                        jtfCantidadCompra.setText(String.valueOf(dc.getCantidadCompra()));//Obtenemos la cantida que esta persona compro
                     }
                 }
             } catch (EOFException eeof) {
@@ -214,6 +222,11 @@ public class Facturacion extends javax.swing.JFrame {
         btnModificar.setFocusable(false);
         btnModificar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnModificar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarActionPerformed(evt);
+            }
+        });
         jToolBar1.add(btnModificar);
 
         btnCancelarReser.setText("Cancelar Reservación");
@@ -343,6 +356,11 @@ public class Facturacion extends javax.swing.JFrame {
         // TODO add your handling code here:
         Consultar();
     }//GEN-LAST:event_btnConsultarActionPerformed
+
+    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+        // TODO add your handling code here:
+        Modificar();
+    }//GEN-LAST:event_btnModificarActionPerformed
 
     /**
      * @param args the command line arguments
