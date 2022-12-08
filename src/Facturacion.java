@@ -100,6 +100,7 @@ public class Facturacion extends javax.swing.JFrame {
             if (existeC) {
                 jtfNombre.setText(Cliente.almacenClientes[indiceEncontrado].getNombre());
                 jtfApellido.setText(Cliente.almacenClientes[indiceEncontrado].getApellidos());
+                jtfPrecioProducto.setText(String.valueOf(Frutas.almacenFrutas.get(indiceEncontrado).getPrecio()));
             } else {
                 aparecen = false;
                 JOptionPane.showMessageDialog(null, "El cliente no se encuentra registrado en el sistema.",
