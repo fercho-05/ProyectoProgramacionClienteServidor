@@ -14,15 +14,15 @@ public class DatosArchivos {
 
     private String Nombre;
     private String Apellido;
-    private Date Fecha;
+    private String Fecha;
     private String DescripcionFruta;
     private int CantidadCompra;
     
 
-    public DatosArchivos(Date Fecha) {
+    public DatosArchivos() {
         this.Nombre = "";
         this.Apellido = "";
-        this.Fecha = Fecha;
+        this.Fecha = "";
         this.DescripcionFruta = "";
         this.CantidadCompra = 0;
     }
@@ -43,11 +43,11 @@ public class DatosArchivos {
         this.Apellido = Apellido;
     }
 
-    public Date getFecha() {
+    public String getFecha() {
         return Fecha;
     }
 
-    public void setFecha(Date Fecha) {
+    public void setFecha(String Fecha) {
         this.Fecha = Fecha;
     }
 

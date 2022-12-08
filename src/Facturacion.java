@@ -4,7 +4,7 @@
  */
 
 import java.io.*;
-import java.util.Date;
+import java.util.*;
 import javax.swing.JOptionPane;
 
 /**
@@ -32,12 +32,12 @@ public class Facturacion extends javax.swing.JFrame {
         try {
 //-----------------------------------------------------------------------------------------------------------------------------------            
             Date date = new Date();//Esta es la fecha y hora actual.
-            DatosArchivos DA = new DatosArchivos(date);//Estos son los datos que vamos a pedir
+            DatosArchivos DA = new DatosArchivos();//Estos son los datos que vamos a pedir
 //-----------------------------------------------------------------------------------------------------------------------------------
             DA.setNombre(jtfNombre.getText());//Obtenemos el nombre en datos archivos
             DA.setApellido(jtfApellido.getText());//Obtenemos el apellido en datos archivos
             DA.setDescripcionFruta(jtfDescripcionFruta.getText());//Obtenemos la descripcion en datos archivos
-            DA.setFecha(date);//Obtenemos la fecha
+            DA.setFecha(date.toString());//Obtenemos la fecha
             DA.setCantidadCompra(Integer.parseInt(jtfCantidadCompra.getText()));//Dijitamos la cantidad a comprar
 //-----------------------------------------------------------------------------------------------------------------------------------
             DataOutputStream salida = new DataOutputStream(new FileOutputStream("Facturacion.dat", true));
@@ -68,53 +68,57 @@ public class Facturacion extends javax.swing.JFrame {
     }
 
     public void Consultar() {
-        int indiceEncontrado = 0;
-        boolean existeC = false, aparecen = false;
+        if (jtfIdentificacion.getText().trim().isBlank() || jtfDescripcionFruta.getText().trim().isBlank()) {
+            JOptionPane.showMessageDialog(null, "Faltan Espacios por rellenar");
+        } else {
+            int indiceEncontrado = 0;
+            boolean existeC = false, aparecen = false;
 //------------CLIENTE----------------------------------------------------------------------------------------------------------------
-        //Buscar en el arreglo
-        for (int i = 0; i < Cliente.almacenClientes.length; i++) {
-            if (Cliente.almacenClientes[i] == null) {
-                break;
-            } else if (Cliente.almacenClientes[i].getIdentificacion() == Integer.parseInt(jtfIdentificacion.getText())) {
-                existeC = true;
-                aparecen = true;
-                break;
+            //Buscar en el arreglo
+            for (int i = 0; i < Cliente.almacenClientes.length; i++) {
+                if (Cliente.almacenClientes[i] == null) {
+                    break;
+                } else if (Cliente.almacenClientes[i].getIdentificacion() == Integer.parseInt(jtfIdentificacion.getText())) {
+                    existeC = true;
+                    aparecen = true;
+                    break;
+                }
+                indiceEncontrado++;
             }
-            indiceEncontrado++;
-        }
-        //Mostrar informacion a usuario
-        if (existeC) {
-            jtfNombre.setText(Cliente.almacenClientes[indiceEncontrado].getNombre());
-            jtfApellido.setText(Cliente.almacenClientes[indiceEncontrado].getApellidos());
-        } else {
-            aparecen = false;
-            JOptionPane.showMessageDialog(null, "El cliente no se encuentra registrado en el sistema.",
-                    "Cliente no encontrado", JOptionPane.ERROR_MESSAGE);
-        }
+            //Mostrar informacion a usuario
+            if (existeC) {
+                jtfNombre.setText(Cliente.almacenClientes[indiceEncontrado].getNombre());
+                jtfApellido.setText(Cliente.almacenClientes[indiceEncontrado].getApellidos());
+            } else {
+                aparecen = false;
+                JOptionPane.showMessageDialog(null, "El cliente no se encuentra registrado en el sistema.",
+                        "Cliente no encontrado", JOptionPane.ERROR_MESSAGE);
+            }
 //----------------FRUTAS-------------------------------------------------------------------------------------------------------------
-        boolean existeF = false;
-        int encontradoF = 0;
+            boolean existeF = false;
+            int encontradoF = 0;
 
-        //Secundario Descripcion fruta
-        for (int i = 0; i < Frutas.almacenFrutas.size(); i++) {
-            if (Frutas.almacenFrutas.get(i).getDescripcion().equals(jtfDescripcionFruta.getText())) {
-                existeF = true;
-                aparecen = true;
-                break;
+            //Secundario Descripcion fruta
+            for (int i = 0; i < Frutas.almacenFrutas.size(); i++) {
+                if (Frutas.almacenFrutas.get(i).getDescripcion().equals(jtfDescripcionFruta.getText())) {
+                    existeF = true;
+                    aparecen = true;
+                    break;
+                }
+                encontradoF++;
             }
-            encontradoF++;
-        }
 
-        if (existeF) {
-            jtfCantidadDisponible.setText(String.valueOf(Frutas.almacenFrutas.get(encontradoF).getCantidad()));
+            if (existeF) {
+                jtfCantidadDisponible.setText(String.valueOf(Frutas.almacenFrutas.get(encontradoF).getCantidad()));
 
-        } else {
-            aparecen = false;
-            JOptionPane.showMessageDialog(null, "La fruta no se encuentra registrada en el sistema.",
-                    "Fruta no encontrada", JOptionPane.INFORMATION_MESSAGE);
-        }
-        if (aparecen == true) {
-            Aparicion(true, false);
+            } else {
+                aparecen = false;
+                JOptionPane.showMessageDialog(null, "La fruta no se encuentra registrada en el sistema.",
+                        "Fruta no encontrada", JOptionPane.INFORMATION_MESSAGE);
+            }
+            if (aparecen == true) {
+                Aparicion(true, false);
+            }
         }
     }
 
@@ -123,6 +127,33 @@ public class Facturacion extends javax.swing.JFrame {
         btnReservar.setVisible(valor);
         btnModificar.setVisible(valor2);
         btnCancelarReser.setVisible(valor2);
+    }
+
+    public void Modificar() {
+        try {
+            DataInputStream entrada = new DataInputStream(new FileInputStream(
+                    "Facturacion.dat"));
+            try {
+                DatosArchivos dc = new DatosArchivos();
+                while (true) {
+                    dc.setNombre(entrada.readUTF());//Leemos datos
+                    dc.setApellido(entrada.readUTF());//Leemos datos
+                    dc.setCantidadCompra(entrada.readInt());//leemos datos
+                    if ((jtfNombre.getText().equals(dc.getNombre()) && (jtfApellido.getText().equals(dc.getApellido())))) {
+                        Aparicion(true, true);
+                        jtfCantidadCompra.setText(String.valueOf(dc.getCantidadCompra()));
+                    }
+                }
+            } catch (EOFException eeof) {
+                entrada.close();
+            }
+        } catch (FileNotFoundException fnfe) {
+            JOptionPane.showMessageDialog(null, "¡Archivo no encontrado!", "Archivo no encontrado",
+                    JOptionPane.ERROR_MESSAGE);
+        } catch (IOException eioe) {
+            JOptionPane.showMessageDialog(null, "¡Error en el dispositivo de almacenamiento!",
+                    "Error en el dispositivo", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     /**
@@ -219,8 +250,6 @@ public class Facturacion extends javax.swing.JFrame {
         jtfCantidadDisponible.setEditable(false);
 
         jLabel6.setText("Cantidad a Comprar:");
-
-        jtfCantidadCompra.setEditable(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
