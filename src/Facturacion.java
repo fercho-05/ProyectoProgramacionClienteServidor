@@ -3,9 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 
+import java.awt.*;
 import java.io.*;
 import java.util.*;
-import javax.swing.JOptionPane;
+import javax.swing.*;
 
 /**
  *
@@ -21,8 +22,9 @@ public class Facturacion extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setTitle("Facturación");
         setResizable(false);
-
-        Aparicion(false, true);
+        Image fruteria = new ImageIcon(getClass().getResource("iconos\\Icono_FRUTERIA.png")).getImage();
+        setIconImage(fruteria);
+        Aparicion(false, true, false);
         jtfCantidadCompra.setEditable(false);
     }
     int n;
@@ -44,6 +46,7 @@ public class Facturacion extends javax.swing.JFrame {
                 DA.setDescripcionFruta(jtfDescripcionFruta.getText());//Obtenemos la descripcion en datos archivos
                 DA.setFecha(date.toString());//Obtenemos la fecha
                 DA.setCantidadCompra(Integer.parseInt(jtfCantidadCompra.getText()));//Dijitamos la cantidad a comprar
+                DA.setPrecio(Double.parseDouble(jtfTotal.getText()));//Obtenemos el precio final
                 //Reduccion de cantidad disponible
                 Frutas.almacenFrutas.get(n).setCantidad(Frutas.almacenFrutas.get(n).getCantidad() - DA.getCantidadCompra());
 //-----------------------------------------------------------------------------------------------------------------------------------
@@ -58,12 +61,14 @@ public class Facturacion extends javax.swing.JFrame {
 //-----------------------------------------------------------------------------------------------------------------------------------
                 //Fin agregado de datos
                 Limpiar();
-                Aparicion(false, true);
+                Aparicion(false, true, false);
                 salida.close();
                 /*Fin Validaciones*/
 
                 //Compra Realizada
                 JOptionPane.showMessageDialog(null, "Su compra se ha realizado");
+                CajasClass c = new CajasClass();
+                c.inicializarServidor();
 //-----------------------------------------------------------------------------------------------------------------------------------            
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null, "¡Ocurrió un error al guardar!",
@@ -73,9 +78,14 @@ public class Facturacion extends javax.swing.JFrame {
     }
 
     public void Limpiar() {
+        jtfIdentificacion.setText(null);
         jtfNombre.setText(null);
         jtfApellido.setText(null);
         jtfDescripcionFruta.setText(null);
+        jtfPrecioProducto.setText(null);
+        jtfCantidadDisponible.setText(null);
+        jtfTotal.setText(null);
+        jtfCantidadCompra.setText(null);
     }
 
     public void Consultar() {
@@ -101,7 +111,6 @@ public class Facturacion extends javax.swing.JFrame {
             if (existeC) {
                 jtfNombre.setText(Cliente.almacenClientes[indiceEncontrado].getNombre());
                 jtfApellido.setText(Cliente.almacenClientes[indiceEncontrado].getApellidos());
-                jtfPrecioProducto.setText(String.valueOf(Frutas.almacenFrutas.get(indiceEncontrado).getPrecio()));
                 jtfCantidadCompra.setEditable(true);
             } else {
                 aparecen = false;
@@ -124,19 +133,20 @@ public class Facturacion extends javax.swing.JFrame {
 
             if (existeF) {
                 jtfCantidadDisponible.setText(String.valueOf(Frutas.almacenFrutas.get(encontradoF).getCantidad()));
-                jtfPrecioProducto.setText(String.valueOf(Frutas.almacenFrutas.get(encontradoF)));
+                jtfPrecioProducto.setText(String.valueOf(Frutas.almacenFrutas.get(encontradoF).getPrecio()));
             } else {
                 aparecen = false;
                 JOptionPane.showMessageDialog(null, "La fruta no se encuentra registrada en el sistema.",
                         "Fruta no encontrada", JOptionPane.INFORMATION_MESSAGE);
             }
             if (aparecen == true) {
-                Aparicion(true, false);
+                Aparicion(false, false, true);
             }
         }
     }
 
-    public final void Aparicion(boolean valor, boolean valor2) {
+    public final void Aparicion(boolean valor, boolean valor2, boolean valor3) {
+        btnPrecio.setVisible(valor3);
         btnConsultar.setVisible(valor2);
         btnReservar.setVisible(valor);
         btnModificar.setVisible(valor2);
@@ -155,10 +165,10 @@ public class Facturacion extends javax.swing.JFrame {
                     dc.setCantidadCompra(entrada.readInt());//leemos datos
                     //Si nombre y apellido son iguales
                     if ((jtfNombre.getText().equals(dc.getNombre()) && (jtfApellido.getText().equals(dc.getApellido())))) {
-                        Aparicion(true, true);//aparecemos reservar
+                        Aparicion(true, true, false);//aparecemos reservar
                         jtfCantidadCompra.setText(String.valueOf(dc.getCantidadCompra()));//Obtenemos la cantida que esta persona compro
-                    }else{
-                        
+                    } else {
+
                     }
                 }
             } catch (EOFException eeof) {
@@ -170,6 +180,20 @@ public class Facturacion extends javax.swing.JFrame {
         } catch (IOException eioe) {
             JOptionPane.showMessageDialog(null, "¡Error en el dispositivo de almacenamiento!",
                     "Error en el dispositivo", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public void Precio() {
+        jtfIdentificacion.setEditable(false);
+        jtfDescripcionFruta.setEditable(false);
+
+        if (jtfCantidadCompra.getText().trim().isBlank()) {
+            JOptionPane.showMessageDialog(null, "Campo Cantidad Compra Vacío");
+        } else {
+            double precioFinal = 0;
+            precioFinal = Double.parseDouble(jtfPrecioProducto.getText()) * Double.parseDouble(jtfCantidadCompra.getText());
+            jtfTotal.setText(String.valueOf(precioFinal));
+            Aparicion(true, false, false);
         }
     }
 
@@ -188,6 +212,7 @@ public class Facturacion extends javax.swing.JFrame {
         btnModificar = new javax.swing.JButton();
         btnCancelarReser = new javax.swing.JButton();
         btnRegresar = new javax.swing.JButton();
+        btnPrecio = new javax.swing.JButton();
         jtfNombre = new javax.swing.JTextField();
         jtfApellido = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
@@ -206,6 +231,11 @@ public class Facturacion extends javax.swing.JFrame {
         jtfTotal = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jToolBar1.setRollover(true);
 
@@ -259,6 +289,17 @@ public class Facturacion extends javax.swing.JFrame {
         });
         jToolBar1.add(btnRegresar);
 
+        btnPrecio.setText("Precio");
+        btnPrecio.setFocusable(false);
+        btnPrecio.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnPrecio.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnPrecio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPrecioActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btnPrecio);
+
         jtfNombre.setEditable(false);
 
         jtfApellido.setEditable(false);
@@ -276,12 +317,6 @@ public class Facturacion extends javax.swing.JFrame {
         jtfCantidadDisponible.setEditable(false);
 
         jLabel6.setText("Cantidad a Comprar:");
-
-        jtfCantidadCompra.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                jtfCantidadCompraKeyTyped(evt);
-            }
-        });
 
         jLabel7.setText("Precio Producto:");
 
@@ -408,12 +443,15 @@ public class Facturacion extends javax.swing.JFrame {
         Modificar();
     }//GEN-LAST:event_btnModificarActionPerformed
 
-    private void jtfCantidadCompraKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfCantidadCompraKeyTyped
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         // TODO add your handling code here:
-        int precioFinal = 0;
-        precioFinal = Integer.parseInt(jtfPrecioProducto.getText())*Integer.parseInt(jtfCantidadCompra.getText());
-        jtfTotal.setText(String.valueOf(precioFinal));
-    }//GEN-LAST:event_jtfCantidadCompraKeyTyped
+        setVisible(false);
+    }//GEN-LAST:event_formWindowClosing
+
+    private void btnPrecioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrecioActionPerformed
+        // TODO add your handling code here:
+        Precio();
+    }//GEN-LAST:event_btnPrecioActionPerformed
 
     /**
      * @param args the command line arguments
@@ -454,6 +492,7 @@ public class Facturacion extends javax.swing.JFrame {
     private javax.swing.JButton btnCancelarReser;
     private javax.swing.JButton btnConsultar;
     private javax.swing.JButton btnModificar;
+    private javax.swing.JButton btnPrecio;
     private javax.swing.JButton btnRegresar;
     private javax.swing.JButton btnReservar;
     private javax.swing.JLabel jLabel1;

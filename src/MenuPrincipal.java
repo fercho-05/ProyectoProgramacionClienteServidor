@@ -10,7 +10,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         initComponents();
         setTitle("Sistema para el control de fruteria");
         setLocationRelativeTo(null);
-        Image fruteria = new ImageIcon(getClass().getResource("iconos\\fruteria.png")).getImage();
+        Image fruteria = new ImageIcon(getClass().getResource("iconos\\Icono_FRUTERIA.png")).getImage();
         setIconImage(fruteria);
         setResizable(false);
     }
@@ -19,6 +19,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         usuarios = new javax.swing.JMenu();
         mitemCliente = new javax.swing.JMenuItem();
@@ -41,6 +42,8 @@ public class MenuPrincipal extends javax.swing.JFrame {
                 formWindowClosing(evt);
             }
         });
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/Fruteria Inicio.png"))); // NOI18N
 
         usuarios.setMnemonic('R');
         usuarios.setText("Registro");
@@ -141,11 +144,11 @@ public class MenuPrincipal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 845, Short.MAX_VALUE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 553, Short.MAX_VALUE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 553, Short.MAX_VALUE)
         );
 
         pack();
@@ -232,6 +235,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;

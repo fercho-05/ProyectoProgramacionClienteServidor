@@ -3,7 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 
-
 import java.util.Date;
 
 /**
@@ -17,7 +16,7 @@ public class DatosArchivos {
     private String Fecha;
     private String DescripcionFruta;
     private int CantidadCompra;
-    
+    private double precio;
 
     public DatosArchivos() {
         this.Nombre = "";
@@ -25,6 +24,7 @@ public class DatosArchivos {
         this.Fecha = "";
         this.DescripcionFruta = "";
         this.CantidadCompra = 0;
+        this.precio = 0.00;
     }
 
     public String getNombre() {
@@ -66,9 +66,12 @@ public class DatosArchivos {
     public void setCantidadCompra(int CantidadCompra) {
         this.CantidadCompra = CantidadCompra;
     }
-    
-    
 
-    
+    public double getPrecio() {
+        return precio;
+    }
 
+    public void setPrecio(double precio) {
+        this.precio = precio;
+    }
 }
