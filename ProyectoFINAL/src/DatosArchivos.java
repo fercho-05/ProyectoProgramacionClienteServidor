@@ -17,6 +17,7 @@ public class DatosArchivos {
     private String DescripcionFruta;
     private int CantidadCompra;
     private double precio;
+    private int id;
 
     public DatosArchivos() {
         this.Nombre = "";
@@ -25,6 +26,7 @@ public class DatosArchivos {
         this.DescripcionFruta = "";
         this.CantidadCompra = 0;
         this.precio = 0.00;
+        this.id = 0;
     }
 
     public String getNombre() {
@@ -74,4 +76,13 @@ public class DatosArchivos {
     public void setPrecio(double precio) {
         this.precio = precio;
     }
-}
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+}  

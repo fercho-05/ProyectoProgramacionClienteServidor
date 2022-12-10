@@ -14,6 +14,8 @@ import javax.swing.*;
  */
 public class Facturacion extends javax.swing.JFrame {
 
+    CajasClass c = new CajasClass();
+
     /**
      * Creates new form Facturacion
      */
@@ -26,6 +28,7 @@ public class Facturacion extends javax.swing.JFrame {
         setIconImage(fruteria);
         Aparicion(false, true, false);
         jtfCantidadCompra.setEditable(false);
+        c.inicializarServidor();
     }
     int n;
 
@@ -33,14 +36,16 @@ public class Facturacion extends javax.swing.JFrame {
     //descripción de  las frutas compradas(deberá buscarlo en el catálogode frutas), 
     //nombre   del    cliente   (deberá  buscar  esta  información  en  las estructuras  respectivas). 
     public void Reservar() {//Aqui registraremos la fecha y hora, descripción de las frutas compradas, nombre del cliente 
-        if (jtfCantidadCompra.getText().trim().isBlank()) {//En este caso solo pedimos este ya que es el unico que ocupamos en este
+        if (jtfCantidadCompra.getText().trim().isBlank() || jtfIdentificacion.getText().trim().isBlank()) {//En este caso solo pedimos este ya que es el unico que ocupamos en este
             JOptionPane.showMessageDialog(null, "Faltan Espacios por rellenar");
+            Aparicion(false, true, false);
         } else {
             try {
 //-----------------------------------------------------------------------------------------------------------------------------------            
                 Date date = new Date();//Esta es la fecha y hora actual.
                 DatosArchivos DA = new DatosArchivos();//Estos son los datos que vamos a pedir
 //-----------------------------------------------------------------------------------------------------------------------------------
+                DA.setId(Integer.parseInt(jtfIdentificacion.getText()));
                 DA.setNombre(jtfNombre.getText());//Obtenemos el nombre en datos archivos
                 DA.setApellido(jtfApellido.getText());//Obtenemos el apellido en datos archivos
                 DA.setDescripcionFruta(jtfDescripcionFruta.getText());//Obtenemos la descripcion en datos archivos
@@ -52,23 +57,34 @@ public class Facturacion extends javax.swing.JFrame {
 //-----------------------------------------------------------------------------------------------------------------------------------
                 DataOutputStream salida = new DataOutputStream(new FileOutputStream("Facturacion.dat", true));
 //-----------------------------------------------------------------------------------------------------------------------------------
+                /*Orden de Datos a Guardar*/
+ /*
+                Fecha
+                ID
+                Nombre
+                Apellido
+                Descripción
+                Cantidad compra
+                Precio
+                 */
                 //Agregamos los datos
                 salida.writeUTF(date.toString());//Convertimos la fecha a String para que no de problemas
-                salida.writeUTF(DA.getNombre() + DA.getApellido());//Guardamos Nombre y Apellido
+                salida.writeInt(DA.getId());//ID
+                salida.writeUTF(DA.getNombre());//Guardamos Nombre y Apellido
+                salida.writeUTF(DA.getApellido());
                 salida.writeUTF(DA.getDescripcionFruta());
                 salida.writeInt(DA.getCantidadCompra());
-
+                salida.writeDouble(DA.getPrecio());
 //-----------------------------------------------------------------------------------------------------------------------------------
                 //Fin agregado de datos
-                Limpiar();
+                Limpiar(null, null);
                 Aparicion(false, true, false);
                 salida.close();
                 /*Fin Validaciones*/
 
                 //Compra Realizada
                 JOptionPane.showMessageDialog(null, "Su compra se ha realizado");
-                CajasClass c = new CajasClass();
-                c.inicializarServidor();
+
 //-----------------------------------------------------------------------------------------------------------------------------------            
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null, "¡Ocurrió un error al guardar!",
@@ -77,15 +93,15 @@ public class Facturacion extends javax.swing.JFrame {
         }
     }
 
-    public void Limpiar() {
-        jtfIdentificacion.setText(null);
-        jtfNombre.setText(null);
-        jtfApellido.setText(null);
-        jtfDescripcionFruta.setText(null);
-        jtfPrecioProducto.setText(null);
-        jtfCantidadDisponible.setText(null);
-        jtfTotal.setText(null);
-        jtfCantidadCompra.setText(null);
+    public void Limpiar(String v1, String v2) {
+        jtfIdentificacion.setText(v1);
+        jtfNombre.setText(v2);
+        jtfApellido.setText(v2);
+        jtfDescripcionFruta.setText(v2);
+        jtfPrecioProducto.setText(v2);
+        jtfCantidadDisponible.setText(v2);
+        jtfTotal.setText(v2);
+        jtfCantidadCompra.setText(v2);
     }
 
     public void Consultar() {
@@ -154,32 +170,106 @@ public class Facturacion extends javax.swing.JFrame {
     }
 
     public void Modificar() {
-        try {
-            DataInputStream entrada = new DataInputStream(new FileInputStream(
-                    "Facturacion.dat"));//
+        if (jtfIdentificacion.getText().trim().isBlank()) {
+            JOptionPane.showMessageDialog(null, "No ha ingresado la identificación");
+        } else {
             try {
-                DatosArchivos dc = new DatosArchivos();
-                while (true) {
-                    dc.setNombre(entrada.readUTF());//Leemos datos
-                    dc.setApellido(entrada.readUTF());//Leemos datos
-                    dc.setCantidadCompra(entrada.readInt());//leemos datos
-                    //Si nombre y apellido son iguales
-                    if ((jtfNombre.getText().equals(dc.getNombre()) && (jtfApellido.getText().equals(dc.getApellido())))) {
-                        Aparicion(true, true, false);//aparecemos reservar
-                        jtfCantidadCompra.setText(String.valueOf(dc.getCantidadCompra()));//Obtenemos la cantida que esta persona compro
-                    } else {
-
+                DataInputStream entrada = new DataInputStream(new FileInputStream(
+                        "Facturacion.dat"));//
+                try {
+                    DatosArchivos dc = new DatosArchivos();
+                    while (true) {
+                        dc.setFecha(entrada.readUTF());
+                        dc.setId(entrada.readInt());
+                        dc.setNombre(entrada.readUTF());
+                        dc.setApellido(entrada.readUTF());
+                        dc.setDescripcionFruta(entrada.readUTF());
+                        dc.setCantidadCompra(entrada.readInt());
+                        dc.setPrecio(entrada.readDouble());
+                        //Si id son iguales
+                        if (Integer.parseInt(jtfIdentificacion.getText()) == dc.getId()) {
+                            JOptionPane.showMessageDialog(null, "Dato Encontrado");
+                            Limpiar(jtfIdentificacion.getText(), null);
+                            /*Orden de Datos a Guardar*/
+                            //Fecha
+                            //ID
+                            //Nombre
+                            //Apellido
+                            //Descripción
+                            //Cantidad compra
+                            //Precio
+                            jtfNombre.setText(dc.getNombre());
+                            jtfApellido.setText(dc.getApellido());
+                            jtfDescripcionFruta.setText(dc.getDescripcionFruta());
+                            jtfCantidadCompra.setText(String.valueOf(dc.getCantidadCompra()));
+                            jtfPrecioProducto.setText(String.valueOf(dc.getPrecio()));
+                            DataOutputStream salida = new DataOutputStream(new FileOutputStream("Facturacion.dat", true));
+                            //salida.writeInt(dc.setCantidadCompra(JOptionPane.showInputDialog("Dijite la nueva cantidad a comprar:")));
+                            Precio();
+                        }
                     }
+                } catch (EOFException eeof) {
+                    entrada.close();
                 }
-            } catch (EOFException eeof) {
-                entrada.close();
+            } catch (FileNotFoundException fnfe) {
+                JOptionPane.showMessageDialog(null, "¡Archivo no encontrado!", "Archivo no encontrado",
+                        JOptionPane.ERROR_MESSAGE);
+            } catch (IOException eioe) {
+                JOptionPane.showMessageDialog(null, "¡Error en el dispositivo de almacenamiento!",
+                        "Error en el dispositivo", JOptionPane.ERROR_MESSAGE);
             }
-        } catch (FileNotFoundException fnfe) {
-            JOptionPane.showMessageDialog(null, "¡Archivo no encontrado!", "Archivo no encontrado",
-                    JOptionPane.ERROR_MESSAGE);
-        } catch (IOException eioe) {
-            JOptionPane.showMessageDialog(null, "¡Error en el dispositivo de almacenamiento!",
-                    "Error en el dispositivo", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public void CancelarReservación() {
+        if (jtfIdentificacion.getText().trim().isBlank()) {
+            JOptionPane.showMessageDialog(null, "No ha ingresado la identificación");
+        } else {
+            try {
+                DataInputStream entrada = new DataInputStream(new FileInputStream(
+                        "Facturacion.dat"));//
+                try {
+                    DatosArchivos dc = new DatosArchivos();
+                    while (true) {
+                        dc.setFecha(entrada.readUTF());
+                        dc.setId(entrada.readInt());
+                        dc.setNombre(entrada.readUTF());
+                        dc.setApellido(entrada.readUTF());
+                        dc.setDescripcionFruta(entrada.readUTF());
+                        dc.setCantidadCompra(entrada.readInt());
+                        dc.setPrecio(entrada.readDouble());
+                        //Si id son iguales
+                        if (Integer.parseInt(jtfIdentificacion.getText()) == dc.getId()) {
+                            JOptionPane.showMessageDialog(null, "Dato Encontrado");
+                            Limpiar(jtfIdentificacion.getText(), null);
+                            /*Orden de Datos a Guardar*/
+                            //Fecha
+                            //ID
+                            //Nombre
+                            //Apellido
+                            //Descripción
+                            //Cantidad compra
+                            //Precio
+                            dc.setFecha(null);
+                            jtfNombre.setText(null);
+                            jtfApellido.setText(null);
+                            jtfDescripcionFruta.setText(null);
+                            jtfCantidadCompra.setText(null);
+                            jtfPrecioProducto.setText(null);
+                            DataOutputStream salida = new DataOutputStream(new FileOutputStream("Facturacion.dat", true));
+
+                        }
+                    }
+                } catch (EOFException eeof) {
+                    entrada.close();
+                }
+            } catch (FileNotFoundException fnfe) {
+                JOptionPane.showMessageDialog(null, "¡Archivo no encontrado!", "Archivo no encontrado",
+                        JOptionPane.ERROR_MESSAGE);
+            } catch (IOException eioe) {
+                JOptionPane.showMessageDialog(null, "¡Error en el dispositivo de almacenamiento!",
+                        "Error en el dispositivo", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 
@@ -211,8 +301,8 @@ public class Facturacion extends javax.swing.JFrame {
         btnReservar = new javax.swing.JButton();
         btnModificar = new javax.swing.JButton();
         btnCancelarReser = new javax.swing.JButton();
-        btnRegresar = new javax.swing.JButton();
         btnPrecio = new javax.swing.JButton();
+        btnRegresar = new javax.swing.JButton();
         jtfNombre = new javax.swing.JTextField();
         jtfApellido = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
@@ -278,17 +368,6 @@ public class Facturacion extends javax.swing.JFrame {
         btnCancelarReser.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(btnCancelarReser);
 
-        btnRegresar.setText("Regresar");
-        btnRegresar.setFocusable(false);
-        btnRegresar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnRegresar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnRegresar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRegresarActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(btnRegresar);
-
         btnPrecio.setText("Precio");
         btnPrecio.setFocusable(false);
         btnPrecio.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -299,6 +378,17 @@ public class Facturacion extends javax.swing.JFrame {
             }
         });
         jToolBar1.add(btnPrecio);
+
+        btnRegresar.setText("Regresar");
+        btnRegresar.setFocusable(false);
+        btnRegresar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnRegresar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnRegresar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegresarActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btnRegresar);
 
         jtfNombre.setEditable(false);
 

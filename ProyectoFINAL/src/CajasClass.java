@@ -1,12 +1,6 @@
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.EOFException;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.io.*;
+import java.net.*;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
 
@@ -48,7 +42,7 @@ public class CajasClass {
             String mensaje = "";
             int mensajenum = 0;
             double mensajenumD = 0.00;
-            while (!mensaje.toLowerCase().equals("SALIR")) {
+            while (!mensaje.toLowerCase().equals("Salir")) {
 
 //***********************************************************************************************************************
                 try {
@@ -57,29 +51,58 @@ public class CajasClass {
                     try {//En caso de que exista buscamos los datos
                         DatosArchivos dc = new DatosArchivos();
                         while (true) {
+                            /*Orden de Datos a Guardar*/
+                            //Fecha
+                            //ID
+                            //Nombre
+                            //Apellido
+                            //Descripción
+                            //Cantidad compra
+                            //Precio
+
                             //Dato 1 = Fecha
                             dc.setFecha(entrada.readUTF());//Leemos fecha
-                            //Dato 2 = Nombre
-                            dc.setNombre(entrada.readUTF());
-                            //Dato 3 = CantidadCompra
-                            dc.setCantidadCompra(entrada.readInt());//leemos datos
-                            //Dato 4 = Precios
+                            //Dato 2 = ID
+                            dc.setId(entrada.readInt());
+                            //Dato 3 = Nombre
+                            dc.setNombre(entrada.readUTF());//leemos datos
+                            //Dato 4 = Apellido
+                            dc.setApellido(entrada.readUTF());
+                            //Dato 5 = Descripcion
+                            dc.setDescripcionFruta(entrada.readUTF());
+                            //Dato 6 = Cantidad compra
+                            dc.setCantidadCompra(entrada.readInt());
+                            //Dato 7 = Precio
                             dc.setPrecio(entrada.readDouble());
                             //PreguPrecntamos la operación que desea realizar
                             //Mensaje Saliente
                             //VENTAS---------------------------------------------------------------------------
+                            //**************************************************************************************
                             //SALIDA ENVIA FECHA
                             mensaje = dc.getFecha();//1
                             salida.writeUTF(mensaje);//ENVIA
-                            //SALIDA NOMBRE
-                            mensaje = dc.getNombre();//2
-                            salida.writeUTF(dc.getNombre());//ENVIA
-                            //SALIDA ENVIA CANTIDADCOMPRA
-                            mensajenum = dc.getCantidadCompra();//3
+                            //SALIDA ID
+                            mensajenum = dc.getId();//2
                             salida.writeInt(mensajenum);//ENVIA
+                            //SALIDA NOMBRE
+                            mensaje = dc.getNombre();//3
+                            salida.writeUTF(mensaje);//ENVIA
                             //SALIDA ENVIA
-                            mensajenumD = dc.getPrecio();//4
-                            salida.writeDouble(mensajenumD);//ENVIA
+                            mensaje = dc.getApellido();//4
+                            salida.writeUTF(mensaje);//ENVIA
+                            //SALIDA 
+                            mensaje = dc.getDescripcionFruta();//5
+                            salida.writeUTF(mensaje);
+                            //SALIDA
+                            mensajenum = dc.getCantidadCompra();//6
+                            salida.writeInt(mensajenum);
+                            //SALIDA
+                            mensajenumD = dc.getPrecio();//7
+                            salida.writeDouble(mensajenumD);
+                            
+                            mensaje = "salir";
+                            salida.writeUTF(mensaje);
+                            //**************************************************************************************
                             //FIN VENTAS------------------------------------------------------------------------
                         }//ENVIO DE DATOS HACÍA CAJA (RECEPTOR)
                     } catch (EOFException eeof) {
