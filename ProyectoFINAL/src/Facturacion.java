@@ -14,7 +14,8 @@ import javax.swing.*;
  */
 public class Facturacion extends javax.swing.JFrame {
 
-    CajasClass c = new CajasClass();
+    //public ArrayList<DatosArchivos> datosarchivos = new ArrayList<>();
+    //DatosArchivos control = new DatosArchivos();
 
     /**
      * Creates new form Facturacion
@@ -26,9 +27,8 @@ public class Facturacion extends javax.swing.JFrame {
         setResizable(false);
         Image fruteria = new ImageIcon(getClass().getResource("iconos\\Icono_FRUTERIA.png")).getImage();
         setIconImage(fruteria);
-        Aparicion(false, true, false);
-        jtfCantidadCompra.setEditable(false);
-        c.inicializarServidor();
+        Aparicion(true, true, false);
+
     }
     int n;
 
@@ -52,8 +52,9 @@ public class Facturacion extends javax.swing.JFrame {
                 DA.setFecha(date.toString());//Obtenemos la fecha
                 DA.setCantidadCompra(Integer.parseInt(jtfCantidadCompra.getText()));//Dijitamos la cantidad a comprar
                 DA.setPrecio(Double.parseDouble(jtfTotal.getText()));//Obtenemos el precio final
+                
                 //Reduccion de cantidad disponible
-                Frutas.almacenFrutas.get(n).setCantidad(Frutas.almacenFrutas.get(n).getCantidad() - DA.getCantidadCompra());
+                //Frutas.almacenFrutas.get(n).setCantidad(Frutas.almacenFrutas.get(n).getCantidad() - DA.getCantidadCompra());
 //-----------------------------------------------------------------------------------------------------------------------------------
                 DataOutputStream salida = new DataOutputStream(new FileOutputStream("Facturacion.dat", true));
 //-----------------------------------------------------------------------------------------------------------------------------------
@@ -221,7 +222,7 @@ public class Facturacion extends javax.swing.JFrame {
         }
     }
 
-    public void CancelarReservación() {
+    public void Anular() {
         if (jtfIdentificacion.getText().trim().isBlank()) {
             JOptionPane.showMessageDialog(null, "No ha ingresado la identificación");
         } else {
@@ -241,7 +242,7 @@ public class Facturacion extends javax.swing.JFrame {
                         //Si id son iguales
                         if (Integer.parseInt(jtfIdentificacion.getText()) == dc.getId()) {
                             JOptionPane.showMessageDialog(null, "Dato Encontrado");
-                            Limpiar(jtfIdentificacion.getText(), null);
+
                             /*Orden de Datos a Guardar*/
                             //Fecha
                             //ID
@@ -250,12 +251,6 @@ public class Facturacion extends javax.swing.JFrame {
                             //Descripción
                             //Cantidad compra
                             //Precio
-                            dc.setFecha(null);
-                            jtfNombre.setText(null);
-                            jtfApellido.setText(null);
-                            jtfDescripcionFruta.setText(null);
-                            jtfCantidadCompra.setText(null);
-                            jtfPrecioProducto.setText(null);
                             DataOutputStream salida = new DataOutputStream(new FileOutputStream("Facturacion.dat", true));
 
                         }
@@ -274,9 +269,6 @@ public class Facturacion extends javax.swing.JFrame {
     }
 
     public void Precio() {
-        jtfIdentificacion.setEditable(false);
-        jtfDescripcionFruta.setEditable(false);
-
         if (jtfCantidadCompra.getText().trim().isBlank()) {
             JOptionPane.showMessageDialog(null, "Campo Cantidad Compra Vacío");
         } else {
@@ -320,12 +312,7 @@ public class Facturacion extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jtfTotal = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(java.awt.event.WindowEvent evt) {
-                formWindowClosing(evt);
-            }
-        });
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jToolBar1.setRollover(true);
 
@@ -362,7 +349,7 @@ public class Facturacion extends javax.swing.JFrame {
         });
         jToolBar1.add(btnModificar);
 
-        btnCancelarReser.setText("Cancelar Reservación");
+        btnCancelarReser.setText("Anular Factura");
         btnCancelarReser.setFocusable(false);
         btnCancelarReser.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnCancelarReser.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -390,10 +377,6 @@ public class Facturacion extends javax.swing.JFrame {
         });
         jToolBar1.add(btnRegresar);
 
-        jtfNombre.setEditable(false);
-
-        jtfApellido.setEditable(false);
-
         jLabel1.setText("Nombre del Cliente:");
 
         jLabel2.setText("Apellido Cliente:");
@@ -404,17 +387,11 @@ public class Facturacion extends javax.swing.JFrame {
 
         jLabel5.setText("Cantidad Disponible:");
 
-        jtfCantidadDisponible.setEditable(false);
-
         jLabel6.setText("Cantidad a Comprar:");
 
         jLabel7.setText("Precio Producto:");
 
-        jtfPrecioProducto.setEditable(false);
-
         jLabel8.setText("Total:");
-
-        jtfTotal.setEditable(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -532,11 +509,6 @@ public class Facturacion extends javax.swing.JFrame {
         // TODO add your handling code here:
         Modificar();
     }//GEN-LAST:event_btnModificarActionPerformed
-
-    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        // TODO add your handling code here:
-        setVisible(false);
-    }//GEN-LAST:event_formWindowClosing
 
     private void btnPrecioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrecioActionPerformed
         // TODO add your handling code here:

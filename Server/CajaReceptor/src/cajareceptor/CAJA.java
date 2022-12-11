@@ -19,7 +19,7 @@ public class CAJA {
     private static final String HOST = "localhost";
     private static final int PUERTO = 5000;//Puerto a utilizar
     private Socket sc;
-    private DataOutputStream salida;//Flujo salida
+    private DataOutputStream exit;//Flujo salida
     private DataInputStream entrada;//Flujo entrada
     private String mensajeRecibido = "";
     private int mensajeRecibidoNumInt = 0;
@@ -30,7 +30,7 @@ public class CAJA {
         try {
             Scanner lectura = new Scanner(System.in);
             sc = new Socket(HOST, PUERTO);
-            salida = new DataOutputStream(sc.getOutputStream());
+            exit = new DataOutputStream(sc.getOutputStream());
             entrada = new DataInputStream(sc.getInputStream());
             String mensaje = "";
 

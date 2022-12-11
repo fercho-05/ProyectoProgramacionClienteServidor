@@ -43,11 +43,11 @@ public class CajasClass {
             int mensajenum = 0;
             double mensajenumD = 0.00;
             while (!mensaje.toLowerCase().equals("Salir")) {
-
 //***********************************************************************************************************************
                 try {
                     //Validamos que exista el .dat
                     DataInputStream entrada = new DataInputStream(new FileInputStream("Facturacion.dat"));//Lectura
+
                     try {//En caso de que exista buscamos los datos
                         DatosArchivos dc = new DatosArchivos();
                         while (true) {
@@ -99,7 +99,7 @@ public class CajasClass {
                             //SALIDA
                             mensajenumD = dc.getPrecio();//7
                             salida.writeDouble(mensajenumD);
-                            
+
                             mensaje = "salir";
                             salida.writeUTF(mensaje);
                             //**************************************************************************************
