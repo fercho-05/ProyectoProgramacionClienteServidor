@@ -51,16 +51,6 @@ public class Empleado extends javax.swing.JFrame {
         jLabelUsuario.setText("Usuario");
 
         tfnombre.setToolTipText("Ingrese su nombre");
-        tfnombre.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                tfnombreFocusGained(evt);
-            }
-        });
-        tfnombre.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tfnombreActionPerformed(evt);
-            }
-        });
 
         tfApellido.setToolTipText("Ingrese sus apellidos");
         tfApellido.addActionListener(new java.awt.event.ActionListener() {
@@ -209,10 +199,6 @@ public class Empleado extends javax.swing.JFrame {
         consultar();
     }//GEN-LAST:event_btnAgregarActionPerformed
 
-    private void tfnombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfnombreActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tfnombreActionPerformed
-
     private void tfApellidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfApellidoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_tfApellidoActionPerformed
@@ -228,10 +214,6 @@ public class Empleado extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         inactivar();
     }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void tfnombreFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tfnombreFocusGained
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tfnombreFocusGained
 
     public void agregar() { 
         try{

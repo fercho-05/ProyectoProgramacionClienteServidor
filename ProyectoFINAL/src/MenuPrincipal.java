@@ -1,5 +1,7 @@
+
 import javax.swing.JOptionPane;
 import java.awt.Image;
+import java.io.File;
 import javax.swing.ImageIcon;
 
 public class MenuPrincipal extends javax.swing.JFrame {
@@ -34,7 +36,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setAlwaysOnTop(true);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 formWindowClosed(evt);
