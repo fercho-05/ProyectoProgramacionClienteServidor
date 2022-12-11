@@ -1,6 +1,7 @@
 
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
 
@@ -22,7 +23,9 @@ public class CajasClass {
     private DataOutputStream salida;
     private DataInputStream entrada;
     private String mensajeRecibido = "";//NO estamos recibiendo datos.
-
+    public static ArrayList<DatosArchivos> almacenArchivos = new ArrayList<>();
+    boolean control = false;
+    
     public void inicializarServidor() {
         Scanner lectura = new Scanner(System.in);
 
@@ -47,7 +50,6 @@ public class CajasClass {
                 try {
                     //Validamos que exista el .dat
                     DataInputStream entrada = new DataInputStream(new FileInputStream("Facturacion.dat"));//Lectura
-
                     try {//En caso de que exista buscamos los datos
                         DatosArchivos dc = new DatosArchivos();
                         while (true) {
@@ -74,34 +76,45 @@ public class CajasClass {
                             dc.setCantidadCompra(entrada.readInt());
                             //Dato 7 = Precio
                             dc.setPrecio(entrada.readDouble());
-                            //PreguPrecntamos la operación que desea realizar
-                            //Mensaje Saliente
+                            //Validacion por medio de un Array auxiliar para que no se repitan datos ni se encicle
+                            //Problema: Logica al leer archivo
+                            for (int i = 0; i < almacenArchivos.size(); i++) {
+                                if (almacenArchivos.get(i).getId() == dc.getId()) {
+                                    control = true;
+                                    break;
+                                }else{
+                                    almacenArchivos.add(dc);
+                                }
+                            }
                             //VENTAS---------------------------------------------------------------------------
                             //**************************************************************************************
-                            //SALIDA ENVIA FECHA
-                            mensaje = dc.getFecha();//1
-                            salida.writeUTF(mensaje);//ENVIA
-                            //SALIDA ID
-                            mensajenum = dc.getId();//2
-                            salida.writeInt(mensajenum);//ENVIA
-                            //SALIDA NOMBRE
-                            mensaje = dc.getNombre();//3
-                            salida.writeUTF(mensaje);//ENVIA
-                            //SALIDA ENVIA
-                            mensaje = dc.getApellido();//4
-                            salida.writeUTF(mensaje);//ENVIA
-                            //SALIDA 
-                            mensaje = dc.getDescripcionFruta();//5
-                            salida.writeUTF(mensaje);
-                            //SALIDA
-                            mensajenum = dc.getCantidadCompra();//6
-                            salida.writeInt(mensajenum);
-                            //SALIDA
-                            mensajenumD = dc.getPrecio();//7
-                            salida.writeDouble(mensajenumD);
-
-                            mensaje = "salir";
-                            salida.writeUTF(mensaje);
+                            if (!control) { //Si control es false los datos no están repetidos entonces se envian
+                                //SALIDA ENVIA FECHA
+                                mensaje = dc.getFecha();//1
+                                salida.writeUTF(mensaje);//ENVIA
+                                //SALIDA ID
+                                mensajenum = dc.getId();//2
+                                salida.writeInt(mensajenum);//ENVIA
+                                //SALIDA NOMBRE
+                                mensaje = dc.getNombre();//3
+                                salida.writeUTF(mensaje);//ENVIA
+                                //SALIDA ENVIA
+                                mensaje = dc.getApellido();//4
+                                salida.writeUTF(mensaje);//ENVIA
+                                //SALIDA 
+                                mensaje = dc.getDescripcionFruta();//5
+                                salida.writeUTF(mensaje);
+                                //SALIDA
+                                mensajenum = dc.getCantidadCompra();//6
+                                salida.writeInt(mensajenum);
+                                //SALIDA
+                                mensajenumD = dc.getPrecio();//7
+                                salida.writeDouble(mensajenumD);
+                            }else{ //Si control es true los datos ya están registrados entonces se cierra el sistema
+                                mensaje = "salir"; //Se envia para cerrar CAJAS, se define para cerrar el ciclo while externo
+                                salida.writeUTF(mensaje);
+                                break;
+                            }
                             //**************************************************************************************
                             //FIN VENTAS------------------------------------------------------------------------
                         }//ENVIO DE DATOS HACÍA CAJA (RECEPTOR)
