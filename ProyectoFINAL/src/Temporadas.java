@@ -8,7 +8,7 @@ import javax.swing.JOptionPane;
  * @author Fernando
  */
 public class Temporadas extends javax.swing.JFrame {
-    public ArrayList<DatosTemporadas> almacenTemporadas = new ArrayList<>();
+    public static ArrayList<DatosTemporadas> almacenTemporadas = new ArrayList<>();
     DatosTemporadas control = new DatosTemporadas();
 
     public Temporadas() {
@@ -195,20 +195,26 @@ public class Temporadas extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     public void agregar(){
-        if (jTextField1.getText().equals("") || jTextField2.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "Por favor, llene todas las casillas para poder agregar una temporada.",
-                    "Casillas vacías", JOptionPane.ERROR_MESSAGE);
-        }else{
-            char estado;
-            if (jCheckBox1.isSelected()) {
-                estado = 'A';
-            } else {
-                estado = 'I';
+        try{
+            if (jTextField1.getText().equals("") || jTextField2.getText().equals("")) {
+                JOptionPane.showMessageDialog(null, "Por favor, llene todas las casillas para poder agregar una temporada.",
+                        "Casillas vacías", JOptionPane.ERROR_MESSAGE);
+            }else{
+                char estado;
+                if (jCheckBox1.isSelected()) {
+                    estado = 'A';
+                } else {
+                    estado = 'I';
+                }
+                DatosTemporadas temporada = new DatosTemporadas(jTextField1.getText(), jTextField2.getText(),estado); 
+
+                control.agregar(almacenTemporadas, temporada);
+                limpiar();
             }
-            DatosTemporadas temporada = new DatosTemporadas(jTextField1.getText(), jTextField2.getText(),estado); 
-            
-            control.agregar(almacenTemporadas, temporada);
-            limpiar();
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "¡Error! Asegurese de ingresar los datos en el formato correcto.",
+                "Error", JOptionPane.WARNING_MESSAGE);
+             limpiar();
         }
     }
     

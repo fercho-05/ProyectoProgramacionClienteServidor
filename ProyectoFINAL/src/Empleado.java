@@ -233,47 +233,52 @@ public class Empleado extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_tfnombreFocusGained
 
-    public void agregar() {   //Se pueden separar funciones en metodos como BuscarIndice o Validar si existe
-        boolean existe = false; //Para verificar que no se repita
-        //Se puede agregar una validacion extra para que el usuario no se repita y agregar excepciones (todos los metodos)
-        if (tfnombre.getText().equals("") || tfApellido.getText().equals("") || tfUsuario.getText().equals(""))  {
-            JOptionPane.showMessageDialog(null, "Por favor, llene todas las casillas para poder agregar un empleado.",
-                    "Casillas vacías", JOptionPane.ERROR_MESSAGE);
-        }else{
-            //Encontrar espacio vacio en el arreglo
-            int indiceVacio = 0;
-            for (int i = 0; i < almacenEmpleados.length; i++) {
-                if (almacenEmpleados[i] == null) {
-                    indiceVacio = i;
-                    break;
-                }
-            }
-            //Llenar espacio vacio del arreglo validando que no se repita el cliente por medio de usuario(Imposible que se tengan dos iguales)
-            for (int i = 0; i < almacenEmpleados.length; i++) {
-                if (almacenEmpleados[i] == null) {
-                    break;
-                }else if(almacenEmpleados[i].getUsuario().equals(tfUsuario.getText())){
-                    existe = true;
-                }
-            }
-            
-            if (existe) {
-                JOptionPane.showMessageDialog(null, "El empleado ya se encuentra registrado en el sistema."+"\n"+"Ingrese datos diferentes.",
-                        "Empleado encontrado", JOptionPane.INFORMATION_MESSAGE);
-                limpiar();
+    public void agregar() { 
+        try{
+            boolean existe = false; //Para verificar que no se repita
+            if (tfnombre.getText().equals("") || tfApellido.getText().equals("") || tfUsuario.getText().equals(""))  {
+                JOptionPane.showMessageDialog(null, "Por favor, llene todas las casillas para poder agregar un empleado.",
+                        "Casillas vacías", JOptionPane.ERROR_MESSAGE);
             }else{
-                char estado;
-                if (jCheckBoxActivo.isSelected()) {
-                        estado = 'A';
-                    } else {
-                        estado = 'I';
+                //Encontrar espacio vacio en el arreglo
+                int indiceVacio = 0;
+                for (int i = 0; i < almacenEmpleados.length; i++) {
+                    if (almacenEmpleados[i] == null) {
+                        indiceVacio = i;
+                        break;
                     }
-                almacenEmpleados[indiceVacio] = new DatosEmpleado(tfnombre.getText(),tfApellido.getText(),tfUsuario.getText(), 
-                        jTextField1.getText(), estado);
-                JOptionPane.showMessageDialog(null, "Los datos se han agregado correctamente.",
-                            "Datos agregados", JOptionPane.INFORMATION_MESSAGE);
-                limpiar();
+                }
+                //Llenar espacio vacio del arreglo validando que no se repita el cliente por medio de usuario(Imposible que se tengan dos iguales)
+                for (int i = 0; i < almacenEmpleados.length; i++) {
+                    if (almacenEmpleados[i] == null) {
+                        break;
+                    }else if(almacenEmpleados[i].getUsuario().equals(tfUsuario.getText())){
+                        existe = true;
+                    }
+                }
+
+                if (existe) {
+                    JOptionPane.showMessageDialog(null, "El empleado ya se encuentra registrado en el sistema."+"\n"+"Ingrese datos diferentes.",
+                            "Empleado encontrado", JOptionPane.INFORMATION_MESSAGE);
+                    limpiar();
+                }else{
+                    char estado;
+                    if (jCheckBoxActivo.isSelected()) {
+                            estado = 'A';
+                        } else {
+                            estado = 'I';
+                        }
+                    almacenEmpleados[indiceVacio] = new DatosEmpleado(tfnombre.getText(),tfApellido.getText(),tfUsuario.getText(), 
+                            jTextField1.getText(), estado);
+                    JOptionPane.showMessageDialog(null, "Los datos se han agregado correctamente.",
+                                "Datos agregados", JOptionPane.INFORMATION_MESSAGE);
+                    limpiar();
+                }
             }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "¡Error! Asegurese de ingresar los datos en el formato correcto.",
+                "Error", JOptionPane.WARNING_MESSAGE);
+             limpiar();
         }
     }
 

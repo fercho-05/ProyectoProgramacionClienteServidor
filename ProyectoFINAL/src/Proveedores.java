@@ -8,7 +8,7 @@ import javax.swing.JOptionPane;
  * @author Fernando
  */
 public class Proveedores extends javax.swing.JFrame {
-    public ArrayList<DatosProveedores> almacenProveedores = new ArrayList<>();
+    public static ArrayList<DatosProveedores> almacenProveedores = new ArrayList<>();
     DatosProveedores control = new DatosProveedores();
 
     public Proveedores() {
@@ -266,24 +266,30 @@ public class Proveedores extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     public void agregar(){
-        if (jTextField1.getText().equals("") || jTextField2.getText().equals("")  || jTextField3.getText().equals("")  
-                || jTextField4.getText().equals("")  || jTextField5.getText().equals("")  || jTextField6.getText().equals("") 
-                || jTextField7.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "Por favor, llene todas las casillas para poder agregar un proveedor.",
-                    "Casillas vacías", JOptionPane.ERROR_MESSAGE);
-        }else{
-            char estado;
-            if (jCheckBox1.isSelected()) {
-                estado = 'A';
-            } else {
-                estado = 'I';
+        try{
+            if (jTextField1.getText().equals("") || jTextField2.getText().equals("")  || jTextField3.getText().equals("")  
+                    || jTextField4.getText().equals("")  || jTextField5.getText().equals("")  || jTextField6.getText().equals("") 
+                    || jTextField7.getText().equals("")) {
+                JOptionPane.showMessageDialog(null, "Por favor, llene todas las casillas para poder agregar un proveedor.",
+                        "Casillas vacías", JOptionPane.ERROR_MESSAGE);
+            }else{
+                char estado;
+                if (jCheckBox1.isSelected()) {
+                    estado = 'A';
+                } else {
+                    estado = 'I';
+                }
+                DatosProveedores proveedor = new DatosProveedores(Integer.parseInt(jTextField3.getText()), jTextField1.getText(),jTextField2.getText(),
+                jTextField4.getText(), jTextField5.getText(), Integer.parseInt(jTextField6.getText()),
+                jTextField7.getText(),estado); 
+
+                control.agregar(almacenProveedores, proveedor);
+                limpiar();
             }
-            DatosProveedores proveedor = new DatosProveedores(Integer.parseInt(jTextField3.getText()), jTextField1.getText(),jTextField2.getText(),
-            jTextField4.getText(), jTextField5.getText(), Integer.parseInt(jTextField6.getText()),
-            jTextField7.getText(),estado); 
-            
-            control.agregar(almacenProveedores, proveedor);
-            limpiar();
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "¡Error! Asegurese de ingresar los datos en el formato correcto.",
+                "Error", JOptionPane.WARNING_MESSAGE);
+             limpiar();
         }
     }
     

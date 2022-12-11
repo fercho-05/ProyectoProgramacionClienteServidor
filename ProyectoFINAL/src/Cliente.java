@@ -294,51 +294,71 @@ public class Cliente extends javax.swing.JFrame {
         editar();
     }//GEN-LAST:event_jButton1ActionPerformed
     
-    public void agregar() { //Se pueden separar funciones en metodos como BuscarIndice o Validar si existe
-        boolean existe = false; //Para verificar que no se repita
-        //Se puede agregar una validacion extra para verificar que el usuario no se repita y agregar excepciones (todos los metodos)
-        if (jTextField1.getText().equals("") || jTextField2.getText().equals("")  || jTextField3.getText().equals("")  
-                || jTextField4.getText().equals("")  || jTextField5.getText().equals("")  || jTextField6.getText().equals("") 
-                || jTextField7.getText().equals("")  || jTextField8.getText().equals("")  || jTextField9.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "Por favor, llene todas las casillas para poder agregar un cliente.",
-                    "Casillas vacías", JOptionPane.ERROR_MESSAGE);
-        }else{
-            //Encontrar espacio vacio en el arreglo
-            int indiceVacio = 0;
-            for (int i = 0; i < almacenClientes.length; i++) {
-                if (almacenClientes[i] == null) {
-                    indiceVacio = i;
-                    break;
-                }
-            }
-            //Llenar espacio vacio del arreglo validando que no se repita el cliente por medio de identificacion(Imposible que se tengan dos iguales)
-            for (int i = 0; i < almacenClientes.length; i++) {
-                if (almacenClientes[i] == null) {
-                    break;
-                }else if(almacenClientes[i].getIdentificacion() == Integer.parseInt(jTextField3.getText())){
-                    existe = true;
-                }
-            }
-            
-            if (existe) {
-                JOptionPane.showMessageDialog(null, "El cliente ya se encuentra registrado en el sistema."+"\n"+"Ingrese datos diferentes.",
-                        "Cliente encontrado", JOptionPane.INFORMATION_MESSAGE);
-                limpiar();
+    public void agregar() { 
+        try{
+            boolean existe = false; //Para verificar que no se repita
+            boolean existeUser = false;
+            if (jTextField1.getText().equals("") || jTextField2.getText().equals("")  || jTextField3.getText().equals("")  
+                    || jTextField4.getText().equals("")  || jTextField5.getText().equals("")  || jTextField6.getText().equals("") 
+                    || jTextField7.getText().equals("")  || jTextField8.getText().equals("")  || jTextField9.getText().equals("")) {
+                JOptionPane.showMessageDialog(null, "Por favor, llene todas las casillas para poder agregar un cliente.",
+                        "Casillas vacías", JOptionPane.ERROR_MESSAGE);
             }else{
-                char estado;
-                if (jCheckBox1.isSelected()) {
-                        estado = 'A';
-                    } else {
-                        estado = 'I';
+                //Encontrar espacio vacio en el arreglo
+                int indiceVacio = 0;
+                for (int i = 0; i < almacenClientes.length; i++) {
+                    if (almacenClientes[i] == null) {
+                        indiceVacio = i;
+                        break;
                     }
-                almacenClientes[indiceVacio] = new DatosClientes(jTextField1.getText(),jTextField2.getText(),
-                Integer.parseInt(jTextField3.getText()), jTextField4.getText(), jTextField5.getText(),Integer.parseInt(jTextField6.getText()),
-                jTextField7.getText(), jTextField8.getText(), jTextField9.getText(), estado);
+                }
+                //Llenar espacio vacio del arreglo validando que no se repita el cliente por medio de identificacion(Imposible que se tengan dos iguales)
+                for (int i = 0; i < almacenClientes.length; i++) {
+                    if (almacenClientes[i] == null) {
+                        break;
+                    }else if(almacenClientes[i].getIdentificacion() == Integer.parseInt(jTextField3.getText())){
+                        existe = true;
+                    }
+                }
+                //Validar que no se repita el usuario. Se hace por separado para una mejor comprension
+                for (int i = 0; i < almacenClientes.length; i++) {
+                    if (almacenClientes[i] == null) {
+                        break;
+                    }else if(almacenClientes[i].getUsuario().equals(jTextField8.getText())){
+                        existeUser = true;
+                    }
+                }
 
-                JOptionPane.showMessageDialog(null, "Los datos se han agregado correctamente.",
-                            "Datos agregados", JOptionPane.INFORMATION_MESSAGE);
-                limpiar();
+                if (existe) {
+                    JOptionPane.showMessageDialog(null, "El cliente ya se encuentra registrado en el sistema."+"\n"+"Ingrese datos diferentes.",
+                            "Cliente encontrado", JOptionPane.INFORMATION_MESSAGE);
+                    limpiar();
+                }else{
+                    if (existeUser) {
+                        JOptionPane.showMessageDialog(null, "El usuario ya se encuentra registrado en el sistema."
+                                +"\n"+"Ingrese un usuario diferente.",
+                            "Usuario repetido", JOptionPane.INFORMATION_MESSAGE);
+                    }else{
+                        char estado;
+                        if (jCheckBox1.isSelected()) {
+                                estado = 'A';
+                            } else {
+                                estado = 'I';
+                            }
+                        almacenClientes[indiceVacio] = new DatosClientes(jTextField1.getText(),jTextField2.getText(),
+                        Integer.parseInt(jTextField3.getText()), jTextField4.getText(), jTextField5.getText(),Integer.parseInt(jTextField6.getText()),
+                        jTextField7.getText(), jTextField8.getText(), jTextField9.getText(), estado);
+
+                        JOptionPane.showMessageDialog(null, "Los datos se han agregado correctamente.",
+                                    "Datos agregados", JOptionPane.INFORMATION_MESSAGE);
+                        limpiar();
+                    }
+                }
             }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "¡Error! Asegurese de ingresar los datos en el formato correcto.",
+                "Error", JOptionPane.WARNING_MESSAGE);
+             limpiar();
         }
     }
     

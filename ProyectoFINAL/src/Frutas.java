@@ -241,22 +241,57 @@ public class Frutas extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     public void agregar() {
-        if (jTextField1.getText().trim().isBlank() || jTextField2.getText().trim().isBlank() || jTextField3.getText().trim().isBlank()
-                || jTextField4.getText().trim().isBlank() || jTextField5.getText().trim().isBlank()) {
-            JOptionPane.showMessageDialog(null, "Por favor, llene todas las casillas para poder agregar una fruta.",
-                    "Casillas vacías", JOptionPane.ERROR_MESSAGE);
-        } else {
-            char estado;
-            if (jCheckBox1.isSelected()) {
-                estado = 'A';
+        try{
+            boolean existeProv = false;
+            boolean existeTemp = false;
+            if (jTextField1.getText().trim().isBlank() || jTextField2.getText().trim().isBlank() || jTextField3.getText().trim().isBlank()
+                    || jTextField4.getText().trim().isBlank() || jTextField5.getText().trim().isBlank()) {
+                JOptionPane.showMessageDialog(null, "Por favor, llene todas las casillas para poder agregar una fruta.",
+                        "Casillas vacías", JOptionPane.ERROR_MESSAGE);
             } else {
-                estado = 'I';
+                char estado;
+                if (jCheckBox1.isSelected()) {
+                    estado = 'A';
+                } else {
+                    estado = 'I';
+                }
+                DatosFrutas fruta = new DatosFrutas(jTextField1.getText(), Integer.parseInt(jTextField2.getText()), jTextField4.getText(),
+                        jTextField5.getText(), Double.parseDouble(jTextField3.getText()), estado);
+                //Validar proveedor
+                for (int i = 0; i < Proveedores.almacenProveedores.size(); i++) {
+                    if (Proveedores.almacenProveedores.get(i).getNombre().equals(fruta.getProveedor())) {
+                        existeProv = true;
+                        if (Proveedores.almacenProveedores.get(i).getEstado() == 'I') {
+                            existeProv = false;
+                        }
+                        break;
+                    }
+                }
+                //Validar temporada
+                for (int i = 0; i < Temporadas.almacenTemporadas.size(); i++) {
+                    if (Temporadas.almacenTemporadas.get(i).getDescripcion().equals(fruta.getTemporada())) {
+                        existeTemp = true;
+                        if (Temporadas.almacenTemporadas.get(i).getEstado() == 'I') {
+                            existeTemp = false;
+                        }
+                        break;
+                    }
+                }
+                if (existeTemp && existeProv) {
+                    control.agregar(almacenFrutas, fruta);
+                    limpiar();
+                }else if (!existeProv){
+                    JOptionPane.showMessageDialog(null, "El proveedor ingresado no se encuentra en el sistema o puede estar inactivo.",
+                        "Proveedor no encontrado", JOptionPane.ERROR_MESSAGE);
+                }else if (!existeTemp){
+                    JOptionPane.showMessageDialog(null, "La temporada ingresada no se encuentra en el sistema o puede estar inactiva.",
+                        "Temporada no encontrada", JOptionPane.ERROR_MESSAGE);
+                }
             }
-            DatosFrutas fruta = new DatosFrutas(jTextField1.getText(), Integer.parseInt(jTextField2.getText()), jTextField4.getText(),
-                    jTextField5.getText(), Double.parseDouble(jTextField3.getText()), estado);
-
-            control.agregar(almacenFrutas, fruta);
-            limpiar();
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "¡Error! Asegurese de ingresar los datos en el formato correcto.",
+                "Error", JOptionPane.WARNING_MESSAGE);
+             limpiar();
         }
     }
 
