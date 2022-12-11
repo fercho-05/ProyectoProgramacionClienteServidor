@@ -3,6 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 
+import java.io.DataOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JOptionPane;
@@ -18,7 +21,7 @@ public class DatosArchivos {
     private String Nombre, Apellido, DescripcionFruta;
     private int CantidadCompra;
     private double precio;
-/*
+
     public DatosArchivos(int id, String fecha, String Nombre, String Apellido, String DescripcionFruta, int CantidadCompra, double precio) {
         this.id = id;
         this.fecha = "";
@@ -28,7 +31,7 @@ public class DatosArchivos {
         this.CantidadCompra = CantidadCompra;
         this.precio = precio;
     }
-*/
+
     public DatosArchivos() {
         this.id = 0;
         this.fecha = "";
@@ -94,7 +97,7 @@ public class DatosArchivos {
     public void setId(int id) {
         this.id = id;
     }
-/*
+
     public void agregar(ArrayList<DatosArchivos> datosarchivos, DatosArchivos p) {
         boolean existe = false;
         for (int i = 0; i < datosarchivos.size(); i++) {
@@ -112,5 +115,5 @@ public class DatosArchivos {
                     "Datos agregados", JOptionPane.INFORMATION_MESSAGE);
         }
     }
-*/
+
 }
