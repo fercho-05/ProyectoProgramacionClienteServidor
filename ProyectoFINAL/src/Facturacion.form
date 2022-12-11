@@ -215,8 +215,14 @@
       </SubComponents>
     </Container>
     <Component class="javax.swing.JTextField" name="jtfNombre">
+      <Properties>
+        <Property name="editable" type="boolean" value="false"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="jtfApellido">
+      <Properties>
+        <Property name="editable" type="boolean" value="false"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
@@ -248,6 +254,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="jtfCantidadDisponible">
+      <Properties>
+        <Property name="editable" type="boolean" value="false"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel6">
       <Properties>
@@ -262,6 +271,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="jtfPrecioProducto">
+      <Properties>
+        <Property name="editable" type="boolean" value="false"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel8">
       <Properties>

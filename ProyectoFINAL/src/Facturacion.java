@@ -28,7 +28,6 @@ public class Facturacion extends javax.swing.JFrame {
         setResizable(false);
         Image fruteria = new ImageIcon(getClass().getResource("iconos\\Icono_FRUTERIA.png")).getImage();
         setIconImage(fruteria);
-        Aparicion(true, true, false);
 
     }
     private int n = 0;
@@ -56,7 +55,7 @@ public class Facturacion extends javax.swing.JFrame {
                 DA.setPrecio(M.ADouble(jtfPrecioProducto.getText()));//Obtenemos el precio final
                 DA.setPrecioTotal(M.ADouble(jtfTotal.getText()));
                 //Reduccion de cantidad disponible
-                //Frutas.almacenFrutas.get(n).setCantidad(Frutas.almacenFrutas.get(n).getCantidad() - DA.getCantidadCompra());
+                Frutas.almacenFrutas.get(n).setCantidad(Frutas.almacenFrutas.get(n).getCantidad() - DA.getCantidadCompra());
 //-----------------------------------------------------------------------------------------------------------------------------------
                 control.agregar(datosarchivos, DA);
 //-----------------------------------------------------------------------------------------------------------------------------------
@@ -146,22 +145,12 @@ public class Facturacion extends javax.swing.JFrame {
                 jtfCantidadDisponible.setText(String.valueOf(Frutas.almacenFrutas.get(encontradoF).getCantidad()));
                 jtfPrecioProducto.setText(String.valueOf(Frutas.almacenFrutas.get(encontradoF).getPrecio()));
             } else {
-                aparecen = false;
+
                 JOptionPane.showMessageDialog(null, "La fruta no se encuentra registrada en el sistema.",
                         "Fruta no encontrada", JOptionPane.INFORMATION_MESSAGE);
             }
-            if (aparecen == true) {
-                Aparicion(false, false, true);
-            }
-        }
-    }
 
-    public final void Aparicion(boolean valor, boolean valor2, boolean valor3) {
-        btnPrecio.setVisible(valor3);
-        btnConsultar.setVisible(valor2);
-        btnReservar.setVisible(valor);
-        btnModificar.setVisible(valor2);
-        btnCancelarReser.setVisible(valor2);
+        }
     }
 
     public void Modificar() {
@@ -190,7 +179,7 @@ public class Facturacion extends javax.swing.JFrame {
             double precioFinal = 0;
             precioFinal = Double.parseDouble(jtfPrecioProducto.getText()) * Double.parseDouble(jtfCantidadCompra.getText());
             jtfTotal.setText(String.valueOf(precioFinal));
-            Aparicion(true, false, false);
+
         }
     }
 
@@ -292,6 +281,10 @@ public class Facturacion extends javax.swing.JFrame {
         });
         jToolBar1.add(btnRegresar);
 
+        jtfNombre.setEditable(false);
+
+        jtfApellido.setEditable(false);
+
         jLabel1.setText("Nombre del Cliente:");
 
         jLabel2.setText("Apellido Cliente:");
@@ -302,9 +295,13 @@ public class Facturacion extends javax.swing.JFrame {
 
         jLabel5.setText("Cantidad Disponible:");
 
+        jtfCantidadDisponible.setEditable(false);
+
         jLabel6.setText("Cantidad a Comprar:");
 
         jLabel7.setText("Precio Producto:");
+
+        jtfPrecioProducto.setEditable(false);
 
         jLabel8.setText("Total:");
 
