@@ -52,7 +52,7 @@ public class Facturacion extends javax.swing.JFrame {
                 DA.setFecha(date.toString());//Obtenemos la fecha
                 DA.setCantidadCompra(Integer.parseInt(jtfCantidadCompra.getText()));//Dijitamos la cantidad a comprar
                 DA.setPrecio(Double.parseDouble(jtfTotal.getText()));//Obtenemos el precio final
-                
+
                 //Reduccion de cantidad disponible
                 //Frutas.almacenFrutas.get(n).setCantidad(Frutas.almacenFrutas.get(n).getCantidad() - DA.getCantidadCompra());
 //-----------------------------------------------------------------------------------------------------------------------------------
