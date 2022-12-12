@@ -1,10 +1,16 @@
 
-import javax.swing.JOptionPane;
-import java.awt.Image;
-import java.io.File;
-import javax.swing.ImageIcon;
+import java.awt.*;
+import javax.swing.*;
+import java.io.*;
+import java.net.*;
 
 public class MenuPrincipal extends javax.swing.JFrame {
+
+    Cliente client = new Cliente();
+    Empleado emple = new Empleado();
+    Proveedores prove = new Proveedores();
+    Temporadas tempo = new Temporadas();
+    Facturacion fact = new Facturacion();
 
     private int salir;
 
@@ -36,7 +42,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
-        setAlwaysOnTop(true);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 formWindowClosed(evt);
@@ -166,7 +172,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void mitemClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitemClienteActionPerformed
-        new Cliente().setVisible(true);
+        client.setVisible(true);
     }//GEN-LAST:event_mitemClienteActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
@@ -182,7 +188,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosing
 
     private void mitemEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mitemEmpleadoActionPerformed
-        new Empleado().setVisible(true);
+        emple.setVisible(true);
     }//GEN-LAST:event_mitemEmpleadoActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
@@ -194,23 +200,23 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        new Cliente().setVisible(true);
+        client.setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        new Proveedores().setVisible(true);
+        prove.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        new Temporadas().setVisible(true);
+        tempo.setVisible(true);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-        new Frutas().setVisible(true);
+        tempo.setVisible(true);
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void jmFacturaciónMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jmFacturaciónMouseClicked
-        new Facturacion().setVisible(true);
+        fact.setVisible(true);
     }//GEN-LAST:event_jmFacturaciónMouseClicked
 
     private void jMenu2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu2MouseClicked
@@ -244,10 +250,8 @@ public class MenuPrincipal extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new MenuPrincipal().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new MenuPrincipal().setVisible(true);
         });
     }
 

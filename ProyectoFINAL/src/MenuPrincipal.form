@@ -146,7 +146,7 @@
     </Menu>
   </NonVisualComponents>
   <Properties>
-    <Property name="alwaysOnTop" type="boolean" value="true"/>
+    <Property name="defaultCloseOperation" type="int" value="2"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="menuBar" type="java.lang.String" value="jMenuBar1"/>
