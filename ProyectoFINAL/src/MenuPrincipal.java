@@ -10,6 +10,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
     Empleado emple = new Empleado();
     Proveedores prove = new Proveedores();
     Temporadas tempo = new Temporadas();
+    Frutas frut = new Frutas();
     Facturacion fact = new Facturacion();
 
     private int salir;
@@ -212,7 +213,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-        tempo.setVisible(true);
+        frut.setVisible(true); 
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void jmFacturaciónMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jmFacturaciónMouseClicked

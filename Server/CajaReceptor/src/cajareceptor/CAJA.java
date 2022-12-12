@@ -6,6 +6,7 @@ package cajareceptor;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
@@ -25,6 +26,8 @@ public class CAJA {
     private int mensajeRecibidoNumInt = 0;
     private double mensajeRecibidoNumDouble = 0.00;
     private double preciofinal = 0;
+    public static ArrayList<DatosCaja> almacenArchivos = new ArrayList<>();
+    boolean control = false;
 
     public void inicializarCliente() {
         try {
@@ -34,7 +37,7 @@ public class CAJA {
             entrada = new DataInputStream(sc.getInputStream());
             String mensaje = "";
 
-            while (!(mensaje.toLowerCase().equals("SALIR") || mensaje.toUpperCase().equals("salir"))) {
+            while ((mensaje.toLowerCase().equals("SALIR") || mensaje.toUpperCase().equals("salir"))) {
                 /*Intrucciones*/
                 //Crear un arhivo con nombre diferente pero que sea .dat aqui dentro
                 //En ese archivo almacenan los datos recibidos de CajaClass
@@ -69,6 +72,15 @@ public class CAJA {
                     mensajeRecibidoNumDouble = entrada.readDouble();//Precio
                     DA.setPrecio(mensajeRecibidoNumDouble);
 
+                    for (int i = 0; i < almacenArchivos.size(); i++) {
+                        if (almacenArchivos.get(i).getId() == DA.getId()) {
+                            control = true;
+                            break;
+                        } else {
+                            almacenArchivos.add(DA);
+                        }
+                    }
+
 //-----------------------------------------------------------------------------------------------------------------------------------
                     DataOutputStream salida = new DataOutputStream(new FileOutputStream("CAJAS.dat", true));
 //-----------------------------------------------------------------------------------------------------------------------------------
@@ -85,20 +97,26 @@ public class CAJA {
                     //Cantidad compra
                     //Precio
                     //Dato 1 = Fecha
-
-                    salida.writeUTF(DA.getFecha());//Convertimos la fecha a String para que no de problemas
-                    salida.writeInt(DA.getId());
-                    salida.writeUTF(DA.getNombre());//Guardamos Nombre y Apellido
-                    salida.writeUTF(DA.getApellido());
-                    salida.writeUTF(DA.getDescripcion());
-                    salida.writeDouble(DA.getCantidad());
-                    salida.writeDouble(DA.getPrecio());
+                    if (!control) {
+                        salida.writeUTF(DA.getFecha());//Convertimos la fecha a String para que no de problemas
+                        salida.writeInt(DA.getId());
+                        salida.writeUTF(DA.getNombre());//Guardamos Nombre y Apellido
+                        salida.writeUTF(DA.getApellido());
+                        salida.writeUTF(DA.getDescripcion());
+                        salida.writeDouble(DA.getCantidad());
+                        salida.writeDouble(DA.getPrecio());
+                    }else{
+                        mensaje = "salir"; //Se envia para cerrar CAJAS, se define para cerrar el ciclo while externo
+                        salida.writeUTF(mensaje);
+                    }
                     //salida.writeDouble(DA.getPrecioTOTALVENTAS());
 //-----------------------------------------------------------------------------------------------------------------------------------
                     //Fin agregado de datos
-                    salida.close();//FIN TODO
+                    //salida.close();//FIN TODO
                     /*Fin Validaciones*/
-                    mensajeRecibido = entrada.readUTF();
+                    //mensaje = "salir"; //Se envia para cerrar CAJAS, se define para cerrar el ciclo while externo
+                    //salida.writeUTF(mensaje);
+                    //mensajeRecibido = entrada.readUTF();
 
                     //Compra Realizada
                     JOptionPane.showMessageDialog(null, "¡Datos Guardados en Cajas!",
